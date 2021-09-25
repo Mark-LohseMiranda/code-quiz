@@ -27,30 +27,48 @@ var lost = false;
 
 var questionsArray = [
   {
-    question: "How much do I love javascript?",
-    answer1: "so much",
-    answer2: "This is the correct answer",
-    answer3: "so much",
-    answer4: "Too much",
+    question: "What is two times two?",
+    answer1: "Two",
+    answer2: "Three",
+    answer3: "Four",
+    answer4: "Five",
+    correctAnswer: "answer3",
+  },
+
+  {
+    question: "What is sixty-four divided by eight?",
+    answer1: "Seven",
+    answer2: "Eight",
+    answer3: "Nine",
+    answer4: "Ten",
     correctAnswer: "answer2",
   },
 
   {
-    question: "How much do I love css?",
-    answer1: "one",
-    answer2: "two",
-    answer3: "three",
-    answer4: "This is the correct answer",
+    question: "What is ten times ten?",
+    answer1: "Ten",
+    answer2: "Twenty",
+    answer3: "Threnty",
+    answer4: "One Hundred",
     correctAnswer: "answer4",
   },
 
   {
-    question: "Question #3",
-    answer1: "one",
-    answer2: "two",
-    answer3: "three",
-    answer4: "This is the correct answer",
+    question: "What is sixty-two plus twenty-six?",
+    answer1: "Eighty-eight",
+    answer2: "Seventy-eight",
+    answer3: "Sixty-eight",
+    answer4: "Ninety-eight",
     correctAnswer: "answer1",
+  },
+
+  {
+    question: "What is one thousand times one thousand?",
+    answer1: "One hundred thousand",
+    answer2: "Ten thousand",
+    answer3: "One million",
+    answer4: "Nine hundred and ninety-nine thousand and nine hundred and ninety-nine",
+    correctAnswer: "answer3",
   },
 ];
 
@@ -89,7 +107,9 @@ answers.addEventListener("click", function (event) {
 function quizWon() {
   answers.setAttribute("class", "answers hide");
   question.setAttribute("class", "question hide");
-  instructions.setAttribute("class", "instruction show");
+  titleEl.textContent = "You Won!!";
+  titleEl.setAttribute("class", "title");
+  instructions.setAttribute("class", "instruction");
   instructions.textContent = `Your score is: ${timerCount}`;
   formEl.setAttribute("class", "form");
 }
@@ -116,10 +136,10 @@ function scoreBoard() {
   formEl.setAttribute("class", "form hide");
   if (!lost) {
     titleEl.textContent = "Highscores";
-} else {
+  } else {
     titleEl.textContent = "You Lost :(";
-}
-titleEl.setAttribute("class", "title");
+  }
+  titleEl.setAttribute("class", "title");
   scoreBoardEl.setAttribute("class", "scoreBoard");
   highScore.sort((a, b) => (a.Score < b.Score ? 1 : -1));
   for (let i = 0; i < highScore.length; i++) {
@@ -138,6 +158,7 @@ viewHighScoreEl.addEventListener("click", function () {
 clearHighScores.addEventListener("click", function () {
   localStorage.clear();
   highScore = [];
+  instructions.setAttribute("class", "instruction hide");
   highScoreListEl.setAttribute("class", "highScoreList hide");
 });
 
@@ -176,5 +197,6 @@ function runGame() {
   startTime();
   displayQuestion();
 }
+
 getHighScores();
 start.addEventListener("click", runGame);
