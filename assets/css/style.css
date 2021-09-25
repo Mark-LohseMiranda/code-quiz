@@ -23,6 +23,15 @@ main {
     width: 100%;
 }
 
+ol {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    margin-left: 40%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .title {
     margin-bottom: 50px;
 }
@@ -81,4 +90,8 @@ main {
 
 .form {
     margin-top: 30px;
+}
+
+.view {
+    margin: 0;
 }
