@@ -25,6 +25,8 @@ var highScore = [];
 var highScoreObj = {};
 var lost = false;
 
+// List of questions
+
 var questionsArray = [
   {
     question: "What is two times two?",
@@ -67,10 +69,14 @@ var questionsArray = [
     answer1: "One hundred thousand",
     answer2: "Ten thousand",
     answer3: "One million",
-    answer4: "Nine hundred and ninety-nine thousand and nine hundred and ninety-nine",
+    answer4:
+      "Nine hundred and ninety-nine thousand and nine hundred and ninety-nine",
     correctAnswer: "answer3",
   },
 ];
+
+// Hides irrelevent sections of HTML and shows relevent sections then
+// moves to create the question and answers
 
 function displayQuestion() {
   titleEl.setAttribute("class", "title hide");
@@ -78,8 +84,11 @@ function displayQuestion() {
   question.setAttribute("class", "question");
   answers.setAttribute("class", "answers");
   start.setAttribute("class", "start hide");
-  populateQuestion(num);
+  populateQuestion();
 }
+
+// Pulls the current question and answers from the list of questions and
+// adds them to the HTML
 
 function populateQuestion() {
   question.textContent = questionsArray[num].question;
@@ -89,6 +98,12 @@ function populateQuestion() {
   answer4.textContent = questionsArray[num].answer4;
   correctAnswer = questionsArray[num].correctAnswer;
 }
+
+// Listens for clicks on the answers DIV. If the click matches the correct
+// answer increase num (to move to the next question in the object)
+// if there are more questions populate the next question; if there aren't
+// change isDone to true
+// if it isn't the correct answer subtract 10 from the timer
 
 answers.addEventListener("click", function (event) {
   var element = event.target;
@@ -104,6 +119,9 @@ answers.addEventListener("click", function (event) {
   }
 });
 
+// quiz has been completed hide the question and answers and show a win
+// message along with the score and initials form
+
 function quizWon() {
   answers.setAttribute("class", "answers hide");
   question.setAttribute("class", "question hide");
@@ -114,12 +132,20 @@ function quizWon() {
   formEl.setAttribute("class", "form");
 }
 
+// if you lose the quiz then hide the question and answers and show the
+// scoreBoard
+
 function loseQuiz() {
   answers.setAttribute("class", "answers hide");
   question.setAttribute("class", "question hide");
   lost = true;
   scoreBoard();
 }
+
+// listen for the submit from the initials form then place the intials and score
+// into the highScore object. Then push that into highScore before blanking out
+// the highScore object for the next game; then local store the array after making
+// a string
 
 initialsForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -130,6 +156,9 @@ initialsForm.addEventListener("submit", function (event) {
   localStorage.setItem("coding-quiz-highscore", JSON.stringify(highScore));
   scoreBoard();
 });
+
+// build a scoreBoard with a different message depending on if you won or lost
+// additionally sorts the highScore by Score
 
 function scoreBoard() {
   headerEl.setAttribute("class", "hide");
@@ -147,13 +176,20 @@ function scoreBoard() {
     listItem.textContent = highScore[i].Initials + ": " + highScore[i].Score;
     highScoreListEl.append(listItem);
   }
-}
+};
+
+// listens for clicks on a view high score button. When clicked hide the 
+// irrelevent parts and then display the scoreBoard
 
 viewHighScoreEl.addEventListener("click", function () {
   instructions.setAttribute("class", "instruction hide");
   start.setAttribute("class", "start hide");
   scoreBoard();
 });
+
+// listens for clicks on the clear high score button. Once clicked it clears
+// localStorage and blanks out highScore then hides the now irrelevent
+// parts
 
 clearHighScores.addEventListener("click", function () {
   localStorage.clear();
@@ -162,9 +198,14 @@ clearHighScores.addEventListener("click", function () {
   highScoreListEl.setAttribute("class", "highScoreList hide");
 });
 
+// listens for clicks on the go back button. Once clicked it reloads the page
+// which brings the user back to the main screen
+
 goBackEl.addEventListener("click", function () {
   location.reload();
 });
+
+// starts the timer until either the quiz is completed or timerCount is 0
 
 function startTime() {
   timer = setInterval(function () {
@@ -183,6 +224,8 @@ function startTime() {
   }, 1000);
 }
 
+// gets the locally stored data
+
 function getHighScores() {
   var storedHighScores = JSON.parse(
     localStorage.getItem("coding-quiz-highscore")
@@ -192,11 +235,19 @@ function getHighScores() {
   }
 }
 
+// resets lost variable, starts the timer, and displays first question
+
 function runGame() {
   lost = false;
   startTime();
   displayQuestion();
 }
 
+// ensure that the locally stored data is avaiable for the show high 
+// scores button
+
 getHighScores();
+
+// when start is clicked start the quiz
+
 start.addEventListener("click", runGame);
