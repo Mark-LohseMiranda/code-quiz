@@ -87,6 +87,25 @@ function displayQuestion() {
   populateQuestion();
 }
 
+// gets the locally stored data
+
+function getHighScores() {
+  var storedHighScores = JSON.parse(
+    localStorage.getItem("coding-quiz-highscore")
+  );
+  if (storedHighScores !== null) {
+    highScore = storedHighScores;
+  }
+}
+// if you lose the quiz then hide the question and answers and show the
+// scoreBoard
+
+function loseQuiz() {
+  answers.setAttribute("class", "answers hide");
+  question.setAttribute("class", "question hide");
+  lost = true;
+  scoreBoard();
+}
 // Pulls the current question and answers from the list of questions and
 // adds them to the HTML
 
@@ -97,6 +116,67 @@ function populateQuestion() {
   answer3.textContent = questionsArray[num].answer3;
   answer4.textContent = questionsArray[num].answer4;
   correctAnswer = questionsArray[num].correctAnswer;
+}
+
+// quiz has been completed hide the question and answers and show a win
+// message along with the score and initials form
+
+function quizWon() {
+  answers.setAttribute("class", "answers hide");
+  question.setAttribute("class", "question hide");
+  titleEl.textContent = "You Won!!";
+  titleEl.setAttribute("class", "title");
+  instructions.setAttribute("class", "instruction");
+  instructions.textContent = `Your score is: ${timerCount}`;
+  formEl.setAttribute("class", "form");
+}
+
+// resets lost variable, starts the timer, and displays first question
+
+function runGame() {
+  lost = false;
+  startTime();
+  displayQuestion();
+}
+
+// build a scoreBoard with a different message depending on if you won or lost
+// additionally sorts the highScore by Score
+
+function scoreBoard() {
+  headerEl.setAttribute("class", "hide");
+  formEl.setAttribute("class", "form hide");
+  if (!lost) {
+    titleEl.textContent = "Highscores";
+  } else {
+    titleEl.textContent = "You Lost :(";
+  }
+  titleEl.setAttribute("class", "title");
+  scoreBoardEl.setAttribute("class", "scoreBoard");
+  highScore.sort((a, b) => (a.Score < b.Score ? 1 : -1));
+  for (let i = 0; i < highScore.length; i++) {
+    var listItem = document.createElement("li");
+    listItem.textContent = highScore[i].Initials + ": " + highScore[i].Score;
+    highScoreListEl.append(listItem);
+  }
+}
+
+// starts the timer until either the quiz is completed or timerCount is 0
+
+function startTime() {
+  timer = setInterval(function () {
+    timerCount--;
+    timeEl.textContent = `Time left: ${timerCount}`;
+    if (timerCount >= 0) {
+      if (isDone && timerCount > 0) {
+        clearInterval(timer);
+        quizWon();
+      }
+    }
+    if (timerCount <= 0) {
+      clearInterval(timer);
+      loseQuiz();
+    }
+  }, 1000);
 }
 
 // Listens for clicks on the answers DIV. If the click matches the correct
@@ -119,74 +199,6 @@ answers.addEventListener("click", function (event) {
   }
 });
 
-// quiz has been completed hide the question and answers and show a win
-// message along with the score and initials form
-
-function quizWon() {
-  answers.setAttribute("class", "answers hide");
-  question.setAttribute("class", "question hide");
-  titleEl.textContent = "You Won!!";
-  titleEl.setAttribute("class", "title");
-  instructions.setAttribute("class", "instruction");
-  instructions.textContent = `Your score is: ${timerCount}`;
-  formEl.setAttribute("class", "form");
-}
-
-// if you lose the quiz then hide the question and answers and show the
-// scoreBoard
-
-function loseQuiz() {
-  answers.setAttribute("class", "answers hide");
-  question.setAttribute("class", "question hide");
-  lost = true;
-  scoreBoard();
-}
-
-// listen for the submit from the initials form then place the intials and score
-// into the highScore object. Then push that into highScore before blanking out
-// the highScore object for the next game; then local store the array after making
-// a string
-
-initialsForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  highScoreObj["Initials"] = initialsInput.value;
-  highScoreObj["Score"] = timerCount;
-  highScore.push(highScoreObj);
-  highScoreObj = {};
-  localStorage.setItem("coding-quiz-highscore", JSON.stringify(highScore));
-  scoreBoard();
-});
-
-// build a scoreBoard with a different message depending on if you won or lost
-// additionally sorts the highScore by Score
-
-function scoreBoard() {
-  headerEl.setAttribute("class", "hide");
-  formEl.setAttribute("class", "form hide");
-  if (!lost) {
-    titleEl.textContent = "Highscores";
-  } else {
-    titleEl.textContent = "You Lost :(";
-  }
-  titleEl.setAttribute("class", "title");
-  scoreBoardEl.setAttribute("class", "scoreBoard");
-  highScore.sort((a, b) => (a.Score < b.Score ? 1 : -1));
-  for (let i = 0; i < highScore.length; i++) {
-    var listItem = document.createElement("li");
-    listItem.textContent = highScore[i].Initials + ": " + highScore[i].Score;
-    highScoreListEl.append(listItem);
-  }
-};
-
-// listens for clicks on a view high score button. When clicked hide the 
-// irrelevent parts and then display the scoreBoard
-
-viewHighScoreEl.addEventListener("click", function () {
-  instructions.setAttribute("class", "instruction hide");
-  start.setAttribute("class", "start hide");
-  scoreBoard();
-});
-
 // listens for clicks on the clear high score button. Once clicked it clears
 // localStorage and blanks out highScore then hides the now irrelevent
 // parts
@@ -205,49 +217,34 @@ goBackEl.addEventListener("click", function () {
   location.reload();
 });
 
-// starts the timer until either the quiz is completed or timerCount is 0
+// listen for the submit from the initials form then place the intials and score
+// into the highScore object. Then push that into highScore before blanking out
+// the highScore object for the next game; then local store the array after making
+// a string
 
-function startTime() {
-  timer = setInterval(function () {
-    timerCount--;
-    timeEl.textContent = `Time left: ${timerCount}`;
-    if (timerCount >= 0) {
-      if (isDone && timerCount > 0) {
-        clearInterval(timer);
-        quizWon();
-      }
-    }
-    if (timerCount <= 0) {
-      clearInterval(timer);
-      loseQuiz();
-    }
-  }, 1000);
-}
-
-// gets the locally stored data
-
-function getHighScores() {
-  var storedHighScores = JSON.parse(
-    localStorage.getItem("coding-quiz-highscore")
-  );
-  if (storedHighScores !== null) {
-    highScore = storedHighScores;
-  }
-}
-
-// resets lost variable, starts the timer, and displays first question
-
-function runGame() {
-  lost = false;
-  startTime();
-  displayQuestion();
-}
-
-// ensure that the locally stored data is avaiable for the show high 
-// scores button
-
-getHighScores();
-
+initialsForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  highScoreObj["Initials"] = initialsInput.value;
+  highScoreObj["Score"] = timerCount;
+  highScore.push(highScoreObj);
+  highScoreObj = {};
+  localStorage.setItem("coding-quiz-highscore", JSON.stringify(highScore));
+  scoreBoard();
+});
 // when start is clicked start the quiz
 
 start.addEventListener("click", runGame);
+
+// listens for clicks on a view high score button. When clicked hide the
+// irrelevent parts and then display the scoreBoard
+
+viewHighScoreEl.addEventListener("click", function () {
+  instructions.setAttribute("class", "instruction hide");
+  start.setAttribute("class", "start hide");
+  scoreBoard();
+});
+
+// ensure that the locally stored data is avaiable for the show high
+// scores button
+
+getHighScores();
