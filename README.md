@@ -1,4 +1,4 @@
-# code-quiz# code-quiz
+# code-quiz
 
 https://mark-lohsemiranda.github.io/code-quiz/
 
