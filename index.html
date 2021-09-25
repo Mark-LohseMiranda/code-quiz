@@ -10,7 +10,7 @@
 <body>
     <header>
         <p>View Highscores</p>
-        <p class="time">Time: 0</p>
+        <p class="time">Time: 80</p>
     </header>
     <main>
         <div class="game-container">
@@ -18,13 +18,24 @@
         <p class="instructions">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
         <div class="question hide"></div>
         <div class="answers hide">
-            <button class="answerOne"></button>
-            <button class="answerTwo"></button>
-            <button class="answerThree"></button>
-            <button class="answerFour"></button>
+            <button class="button answer1"></button>
+            <button class="button answer2"></button>
+            <button class="button answer3"></button>
+            <button class="button answer4"></button>
+        </div>
+        <div class="form hide">
+           <p class="high-score"></p>
+           <form id="initialsForm" method="POST">
+               <label for="initials">Enter initials: </label>
+               <input type="text" placeholder="Initials" name="initials" id="initials" />
+               <input type="submit" value="Submit"/>
+           </form>     
+        </div>
+        <div class="scoreBoard hide">
+            <ol class="highScoreList"></ol>
         </div>
         <div class="btn">
-        <button class="start">Start</button>
+        <button class="button start">Start</button>
         </div>
         </div>
     </main>
