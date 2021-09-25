@@ -23,6 +23,7 @@ var num = 0;
 var isDone = false;
 var highScore = [];
 var highScoreObj = {};
+var lost = false;
 
 var questionsArray = [
   {
@@ -94,7 +95,10 @@ function quizWon() {
 }
 
 function loseQuiz() {
-  alert("you lose");
+  answers.setAttribute("class", "answers hide");
+  question.setAttribute("class", "question hide");
+  lost = true;
+  scoreBoard();
 }
 
 initialsForm.addEventListener("submit", function (event) {
@@ -110,8 +114,12 @@ initialsForm.addEventListener("submit", function (event) {
 function scoreBoard() {
   headerEl.setAttribute("class", "hide");
   formEl.setAttribute("class", "form hide");
-  titleEl.textContent = "Highscores";
-  titleEl.setAttribute("class", "title");
+  if (!lost) {
+    titleEl.textContent = "Highscores";
+} else {
+    titleEl.textContent = "You Lost :(";
+}
+titleEl.setAttribute("class", "title");
   scoreBoardEl.setAttribute("class", "scoreBoard");
   highScore.sort((a, b) => (a.Score < b.Score ? 1 : -1));
   for (let i = 0; i < highScore.length; i++) {
@@ -164,6 +172,7 @@ function getHighScores() {
 }
 
 function runGame() {
+  lost = false;
   startTime();
   displayQuestion();
 }
