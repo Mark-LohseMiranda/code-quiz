@@ -240,6 +240,8 @@ start.addEventListener("click", runGame);
 
 viewHighScoreEl.addEventListener("click", function () {
   instructions.setAttribute("class", "instruction hide");
+  answers.setAttribute("class", "answers hide");
+  question.setAttribute("class", "question hide");
   start.setAttribute("class", "start hide");
   scoreBoard();
 });
