@@ -29,48 +29,47 @@ var lost = false;
 
 var questionsArray = [
   {
-    question: "What is two times two?",
-    answer1: "Two",
-    answer2: "Three",
-    answer3: "Four",
-    answer4: "Five",
+    question: "What does CSS stand for?",
+    answer1: "Cascading Simple Sheets",
+    answer2: "Cascading Slick Sheets",
+    answer3: "Cascading Style Sheets ",
+    answer4: "Cringy Silly Blankets",
     correctAnswer: "answer3",
   },
 
   {
-    question: "What is sixty-four divided by eight?",
-    answer1: "Seven",
-    answer2: "Eight",
-    answer3: "Nine",
-    answer4: "Ten",
+    question: "Which property is used to change the background color?",
+    answer1: "color-background",
+    answer2: "background-color",
+    answer3: "color-back",
+    answer4: "back-color",
     correctAnswer: "answer2",
   },
 
   {
-    question: "What is ten times ten?",
-    answer1: "Ten",
-    answer2: "Twenty",
-    answer3: "Threnty",
-    answer4: "One Hundred",
+    question: "Where in a HTML document is the correct place to refer to an external style sheet?",
+    answer1: "At the end",
+    answer2: "In the <body> section",
+    answer3: "In the <style> section",
+    answer4: "In the <head> section",
     correctAnswer: "answer4",
   },
 
   {
-    question: "What is sixty-two plus twenty-six?",
-    answer1: "Eighty-eight",
-    answer2: "Seventy-eight",
-    answer3: "Sixty-eight",
-    answer4: "Ninety-eight",
+    question: "Which is a proper CSS comment?",
+    answer1: "/* This is a CSS comment */",
+    answer2: "// This is a CSS comment //",
+    answer3: "* This is a CSS comment *",
+    answer4: "/ This is a CSS comment /",
     correctAnswer: "answer1",
   },
 
   {
-    question: "What is one thousand times one thousand?",
-    answer1: "One hundred thousand",
-    answer2: "Ten thousand",
-    answer3: "One million",
-    answer4:
-      "Nine hundred and ninety-nine thousand and nine hundred and ninety-nine",
+    question: "What is the proper way to creat a CSS rule for a class?",
+    answer1: "#className { }",
+    answer2: "className { }",
+    answer3: ".className { }",
+    answer4: ",className { }",
     correctAnswer: "answer3",
   },
 ];
@@ -231,6 +230,7 @@ initialsForm.addEventListener("submit", function (event) {
   localStorage.setItem("coding-quiz-highscore", JSON.stringify(highScore));
   scoreBoard();
 });
+
 // when start is clicked start the quiz
 
 start.addEventListener("click", runGame);
